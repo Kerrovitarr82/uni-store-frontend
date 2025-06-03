@@ -1,11 +1,11 @@
 const api = {
-  baseURL: 'http://localhost:8080/api/v1',
+  baseURL: "http://localhost:8080/api/v1",
 
   async request(endpoint, options = {}) {
     const response = await fetch(`${this.baseURL}${endpoint}`, {
-      credentials: 'include', // обязательно для cookie
+      credentials: "include", // обязательно для cookie
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options.headers,
       },
       ...options,
@@ -13,7 +13,9 @@ const api = {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        errorData?.message || `HTTP error! status: ${response.status}`
+      );
     }
 
     // Иногда может быть пустой ответ у DELETE и др.
@@ -24,15 +26,15 @@ const api = {
 
   // Auth
   async login(email, password) {
-    return this.request('/auth/login', {
-      method: 'POST',
+    return this.request("/auth/login", {
+      method: "POST",
       body: JSON.stringify({ email, password }),
     });
   },
 
   async signup(userData) {
-    return this.request('/auth/signup', {
-      method: 'POST',
+    return this.request("/auth/signup", {
+      method: "POST",
       body: JSON.stringify(userData),
     });
   },
@@ -44,7 +46,7 @@ const api = {
 
   async updateUser(userId, data) {
     return this.request(`/users/${userId}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify(data),
     });
   },
@@ -64,15 +66,17 @@ const api = {
   },
 
   async addToCart(userId, gameId) {
-    return this.request(`/cart/${userId}/add/${gameId}`, { method: 'POST' });
+    return this.request(`/cart/${userId}/add/${gameId}`, { method: "POST" });
   },
 
   async removeFromCart(userId, gameId) {
-    return this.request(`/cart/${userId}/remove/${gameId}`, { method: 'DELETE' });
+    return this.request(`/cart/${userId}/remove/${gameId}`, {
+      method: "DELETE",
+    });
   },
 
   async clearCart(userId) {
-    return this.request(`/cart/${userId}/clear`, { method: 'DELETE' });
+    return this.request(`/cart/${userId}/clear`, { method: "DELETE" });
   },
 
   // Favorites
@@ -81,15 +85,19 @@ const api = {
   },
 
   async addToFavorites(userId, gameId) {
-    return this.request(`/favorite/${userId}/add/${gameId}`, { method: 'POST' });
+    return this.request(`/favorite/${userId}/add/${gameId}`, {
+      method: "POST",
+    });
   },
 
   async removeFromFavorites(userId, gameId) {
-    return this.request(`/favorite/${userId}/remove/${gameId}`, { method: 'DELETE' });
+    return this.request(`/favorite/${userId}/remove/${gameId}`, {
+      method: "DELETE",
+    });
   },
 
   async clearFavorites(userId) {
-    return this.request(`/favorite/${userId}/clear`, { method: 'DELETE' });
+    return this.request(`/favorite/${userId}/clear`, { method: "DELETE" });
   },
 
   // Library
@@ -102,10 +110,17 @@ const api = {
     return this.request(`/reviews/game/${gameId}`);
   },
 
-  async createReview(reviewData) { // пофиксить на беке
-    return this.request('/reviews', {
-      method: 'POST',
+  async createReview(reviewData) {
+    // пофиксить на беке
+    return this.request("/reviews", {
+      method: "POST",
       body: JSON.stringify(reviewData),
+    });
+  },
+
+  async createOrder(userId) {
+    return this.request(`/orders/${userId}/create`, {
+      method: "POST",
     });
   },
 };

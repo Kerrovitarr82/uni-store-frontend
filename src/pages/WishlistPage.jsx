@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import api from '../api/api';
+import { Link } from "react-router-dom";
+import api from "../api/api";
+import { Gamepad2 } from "lucide-react";
 
 export default function WishlistPage() {
   const { user } = useAuth();
@@ -36,27 +38,50 @@ export default function WishlistPage() {
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Список желаемого</h1>
+    <div className="min-h-screen bg-gray-950">
+      <div className="bg-gradient-to-r from-blue-900 via-purple-900 to-pink-900 py-4">
+        <div className="mx-auto text-center">
+          <h1 className="text-2xl font-bold text-white">Список желаемого</h1>
+        </div>
+      </div>
       {games.length === 0 ? (
-        <p>Ваш список пуст.</p>
+        <h1 className="p-2 text-2xl font-bold text-white">Ваш список пуст.</h1>
       ) : (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 p-4">
           {games.map((game) => (
-            <li key={game.id} className="border p-4 rounded shadow bg-white">
-              <h3 className="font-semibold text-lg">{game.name}</h3>
-              <p className="text-sm text-gray-600">
-                {game.description?.slice(0, 80)}...
-              </p>
-              <button
-                onClick={() => handleRemove(game.id)}
-                className="mt-2 text-sm text-red-500 hover:underline"
-              >
-                Удалить из списка
-              </button>
-            </li>
+            <div
+              key={game.id}
+              className="bg-gray-800 rounded-xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group"
+            >
+              <div className="relative">
+                <Link to={`/games/${game.id}`}>
+                  <div className="h-48 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+                    <Gamepad2 size={64} className="text-white opacity-50" />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                      {game.name}
+                    </h3>
+                    <p className="text-gray-400 text-sm mb-3 line-clamp-2">
+                      {game.description?.slice(0, 100)}...
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold text-green-400">
+                        ${game.price}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+                <button
+                  onClick={() => handleRemove(game.id)}
+                  className="w-full py-2 px-4 rounded-lg font-semibold transition-all bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
+                >
+                  Удалить из списка
+                </button>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
