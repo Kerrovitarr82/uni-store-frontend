@@ -9,7 +9,8 @@ export default function RegisterPage() {
     email: "",
     password: "",
     name: "",
-    secondName: "",
+    second_name: "",
+    phone_number: "",
   });
 
   const [error, setError] = useState(null);
@@ -63,9 +64,18 @@ export default function RegisterPage() {
             />
             <input
               type="text"
-              name="secondName"
+              name="second_name"
               placeholder="Фамилия"
-              value={form.secondName}
+              value={form.second_name}
+              onChange={handleChange}
+              required
+              className="w-full p-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:border-blue-500 focus:outline-none"
+            />
+            <input
+              type="text"
+              name="phone_number"
+              placeholder="Телефон"
+              value={form.phone_number}
               onChange={handleChange}
               required
               className="w-full p-3 bg-gray-800 text-white rounded-lg border border-gray-700 focus:border-blue-500 focus:outline-none"
